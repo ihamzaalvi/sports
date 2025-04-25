@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sports Result Card Generator</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .row {
+            display: flex;
+            gap: 20px;
+        }
+        .col {
+            flex: 1;
+        }
+        .sports-result {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .results-container {
+            margin-top: 20px;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        .result-card {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            margin-top: 30px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .card-header {
+            text-align: center;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .athlete-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .info-item {
+            margin-bottom: 10px;
+        }
+        .info-item span {
+            font-weight: bold;
+        }
+        .performance-data {
+            margin-top: 20px;
+            border-top: 1px solid #ddd;
+            padding-top: 20px;
+        }
+        .performance-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .performance-table th, .performance-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        .performance-table th {
+            background-color: #f2f2f2;
+        }
+        #printButton {
+            background-color: #27ae60;
+        }
+        #printButton:hover {
+            background-color: #219a52;
+        }
+        @media print {
+            .container:first-child {
+                display: none;
+            }
+            .result-card {
+                box-shadow: none;
+                border: 1px solid #000;
+            }
+            body {
+                background-color: white;
+                padding: 0;
+                margin: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Sports Result Card Generator</h1>
+        
+        <!-- Input Form -->
+        <form id="resultCardForm">
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label for="name">Athlete's Name</label>
+                        <input type="text" id="name" required>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label for="fatherName">Father's Name</label>
+                        <input type="text" id="fatherName" required>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label for="cnic">CNIC</label>
+                        <input type="text" id="cnic" placeholder="00000-0000000-0" required>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label for="residence">Residence</label>
+                        <input type="text" id="residence" required>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="sportType">Sport Type</label>
+                <select id="sportType" required>
+                    <option value="">Select Sport</option>
+                    <option value="Cricket">Cricket</option>
+                    <option value="Football">Football</option>
+                    <option value="Basketball">Basketball</option>
+                    <option value="Tennis">Tennis</option>
+                    <option value="Swimming">Swimming</option>
+                    <option value="Athletics">Athletics</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            
+            <div class="sports-result">
+                <h3>Performance Results</h3>
+                <div id="cricketResults" style="display: none;">
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="matches">Matches Played</label>
+                                <input type="number" id="matches" min="0">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="runs">Total Runs</label>
+                                <input type="number" id="runs" min="0">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="wickets">Wickets Taken</label>
+                                <input type="number" id="wickets" min="0">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="average">Batting Average</label>
+                                <input type="number" id="average" step="0.01" min="0">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="footballResults" style="display: none;">
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="matches">Matches Played</label>
+                                <input type="number" id="footballMatches" min="0">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="goals">Goals Scored</label>
+                                <input type="number" id="goals" min="0">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="assists">Assists</label>
+                                <input type="number" id="assists" min="0">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="position">Position</label>
+                                <input type="text" id="position">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="otherResults">
+                    <div class="form-group">
+                        <label for="performanceDetails">Performance Details</label>
+                        <textarea id="performanceDetails" rows="4" style="width: 100%; padding: 10px;"></textarea>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="eventName">Event/Tournament Name</label>
+                <input type="text" id="eventName">
+            </div>
+            
+            <div class="form-group">
+                <label for="eventDate">Event Date</label>
+                <input type="date" id="eventDate">
+            </div>
+            
+            <button type="button" id="generateCard">Generate Result Card</button>
+        </form>
+    </div>
+    
+    <!-- Result Card Output -->
+    <div class="container" id="resultCardOutput" style="display: none; margin-top: 30px;">
+        <div class="result-card">
+            <div class="card-header">
+                <h2>SPORTS RESULT CARD</h2>
+                <h3 id="outputEventName"></h3>
+                <p id="outputEventDate"></p>
+            </div>
+            
+            <div class="athlete-info">
+                <div class="info-item">
+                    <span>Athlete Name:</span> <span id="outputName"></span>
+                </div>
+                <div class="info-item">
+                    <span>Father's Name:</span> <span id="outputFatherName"></span>
+                </div>
+                <div class="info-item">
+                    <span>CNIC:</span> <span id="outputCNIC"></span>
+                </div>
+                <div class="info-item">
+                    <span>Residence:</span> <span id="outputResidence"></span>
+                </div>
+                <div class="info-item">
+                    <span>Sport:</span> <span id="outputSport"></span>
+                </div>
+            </div>
+            
+            <div class="performance-data">
+                <h3>Performance Results</h3>
+                <div id="outputCricketResults" style="display: none;">
+                    <table class="performance-table">
+                        <tr>
+                            <th>Matches</th>
+                            <th>Runs</th>
+                            <th>Wickets</th>
+                            <th>Average</th>
+                        </tr>
+                        <tr>
+                            <td id="outputMatches"></td>
+                            <td id="outputRuns"></td>
+                            <td id="outputWickets"></td>
+                            <td id="outputAverage"></td>
+                        </tr>
+                    </table>
+                </div>
+                
+                <div id="outputFootballResults" style="display: none;">
+                    <table class="performance-table">
+                        <tr>
+                            <th>Matches</th>
+                            <th>Goals</th>
+                            <th>Assists</th>
+                            <th>Position</th>
+                        </tr>
+                        <tr>
+                            <td id="outputFootballMatches"></td>
+                            <td id="outputGoals"></td>
+                            <td id="outputAssists"></td>
+                            <td id="outputPosition"></td>
+                        </tr>
+                    </table>
+                </div>
+                
+                <div id="outputOtherResults" style="display: none;">
+                    <p id="outputPerformanceDetails"></p>
+                </div>
+            </div>
+        </div>
+        
+        <button type="button" id="printButton">Print Result Card</button>
+    </div>
+    
+    <script>
+        // Show/hide sport-specific result fields based on selection
+        document.getElementById('sportType').addEventListener('change', function() {
+            const sportType = this.value;
+            document.getElementById('cricketResults').style.display = 'none';
+            document.getElementById('footballResults').style.display = 'none';
+            document.getElementById('otherResults').style.display = 'none';
+            
+            if (sportType === 'Cricket') {
+                document.getElementById('cricketResults').style.display = 'block';
+            } else if (sportType === 'Football') {
+                document.getElementById('footballResults').style.display = 'block';
+            } else {
+                document.getElementById('otherResults').style.display = 'block';
+            }
+        });
+        
+        // Generate result card
+        document.getElementById('generateCard').addEventListener('click', function() {
+            const name = document.getElementById('name').value;
+            const fatherName = document.getElementById('fatherName').value;
+            const cnic = document.getElementById('cnic').value;
+            const residence = document.getElementById('residence').value;
+            const sportType = document.getElementById('sportType').value;
+            const eventName = document.getElementById('eventName').value;
+            const eventDate = document.getElementById('eventDate').value;
+            
+            // Check required fields
+            if (!name || !fatherName || !cnic || !residence || !sportType) {
+                alert('Please fill in all required fields');
+                return;
+            }
+            
+            // Populate the result card
+            document.getElementById('outputName').textContent = name;
+            document.getElementById('outputFatherName').textContent = fatherName;
+            document.getElementById('outputCNIC').textContent = cnic;
+            document.getElementById('outputResidence').textContent = residence;
+            document.getElementById('outputSport').textContent = sportType;
+            document.getElementById('outputEventName').textContent = eventName;
+            
+            // Format and display the date
+            if (eventDate) {
+                const formattedDate = new Date(eventDate).toLocaleDateString('en-US', {
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric'
+                });
+                document.getElementById('outputEventDate').textContent = formattedDate;
+            } else {
+                document.getElementById('outputEventDate').textContent = '';
+            }
+            
+            // Hide all result sections first
+            document.getElementById('outputCricketResults').style.display = 'none';
+            document.getElementById('outputFootballResults').style.display = 'none';
+            document.getElementById('outputOtherResults').style.display = 'none';
+            
+            // Show the appropriate result section and populate data
+            if (sportType === 'Cricket') {
+                document.getElementById('outputCricketResults').style.display = 'block';
+                document.getElementById('outputMatches').textContent = document.getElementById('matches').value || '0';
+                document.getElementById('outputRuns').textContent = document.getElementById('runs').value || '0';
+                document.getElementById('outputWickets').textContent = document.getElementById('wickets').value || '0';
+                document.getElementById('outputAverage').textContent = document.getElementById('average').value || '0';
+            } else if (sportType === 'Football') {
+                document.getElementById('outputFootballResults').style.display = 'block';
+                document.getElementById('outputFootballMatches').textContent = document.getElementById('footballMatches').value || '0';
+                document.getElementById('outputGoals').textContent = document.getElementById('goals').value || '0';
+                document.getElementById('outputAssists').textContent = document.getElementById('assists').value || '0';
+                document.getElementById('outputPosition').textContent = document.getElementById('position').value || '-';
+            } else {
+                document.getElementById('outputOtherResults').style.display = 'block';
+                document.getElementById('outputPerformanceDetails').textContent = document.getElementById('performanceDetails').value || 'No details provided';
+            }
+            
+            // Show the result card section
+            document.getElementById('resultCardOutput').style.display = 'block';
+        });
+        
+        // Print functionality
+        document.getElementById('printButton').addEventListener('click', function() {
+            window.print();
+        });
+    </script>
+</body>
+</html>
